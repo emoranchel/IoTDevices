@@ -16,6 +16,11 @@
       <artifactId>Pi-spec</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>jdk.dio</groupId>
+      <artifactId>dio</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
 
 </project>
