@@ -13,7 +13,7 @@
   <dependencies>
     <dependency>
       <groupId>org.asmatron.iot</groupId>
-      <artifactId>Pi-spec</artifactId>
+      <artifactId>GrovePi-spec</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
