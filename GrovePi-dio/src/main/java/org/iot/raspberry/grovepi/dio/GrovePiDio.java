@@ -3,6 +3,7 @@ package org.iot.raspberry.grovepi.dio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdk.dio.DeviceManager;
@@ -44,16 +45,20 @@ public class GrovePiDio implements GrovePi, GroveIO {
 
   @Override
   public void send(int... cmd) throws IOException {
-    ByteBuffer command = ByteBuffer.allocateDirect(cmd.length);
-    Arrays.stream(cmd).forEach((c) -> command.put((byte) c));
-    command.rewind();
-    Logger.getLogger("GrovePi").log(Level.INFO, "[DIO]Sending command {0}", Arrays.toString(cmd));
-    device.write(command);
+    synchronized (this) {
+      ByteBuffer command = ByteBuffer.allocateDirect(cmd.length);
+      Arrays.stream(cmd).forEach((c) -> command.put((byte) c));
+      command.rewind();
+      Logger.getLogger("GrovePi").log(Level.INFO, "[DIO]Sending command {0}", Arrays.toString(cmd));
+      device.write(command);
+    }
   }
 
   @Override
   public int read() throws IOException {
-    return device.read();
+    synchronized (this) {
+      return device.read();
+    }
   }
 
 }

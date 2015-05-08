@@ -45,14 +45,18 @@ public class GrovePi4J implements GrovePi, GroveIO {
 
   @Override
   public void send(int... command) throws IOException {
-    ByteBuffer buffer = ByteBuffer.allocateDirect(command.length);
-    Arrays.stream(command).forEach((c) -> buffer.put((byte) c));
-    device.write(buffer.array(), 0, command.length);
+    synchronized (this) {
+      ByteBuffer buffer = ByteBuffer.allocateDirect(command.length);
+      Arrays.stream(command).forEach((c) -> buffer.put((byte) c));
+      device.write(buffer.array(), 0, command.length);
+    }
   }
 
   @Override
   public int read() throws IOException {
-    return device.read();
+    synchronized (this) {
+      return device.read();
+    }
   }
 
 }

@@ -18,14 +18,26 @@ public class GroveDigitalIn implements Runnable {
   }
 
   public boolean get() throws IOException, InterruptedException {
-    grovePi.send(dRead_cmd, pin, unused, unused);
-    Thread.sleep(100);
-    boolean st = grovePi.read() == 1;
-    if (listener != null && status != st) {
-      listener.onChange(status, st);
+    try {
+      boolean st = grovePi.exec(() -> {
+        grovePi.send(dRead_cmd, pin, unused, unused);
+        Thread.sleep(100);
+        return grovePi.read() == 1;
+      });
+      if (listener != null && status != st) {
+        listener.onChange(status, st);
+      }
+      this.status = st;
+      return st;
+    } catch (Exception ex) {
+      if (ex instanceof IOException) {
+        throw (IOException) ex;
+      }
+      if (ex instanceof InterruptedException) {
+        throw (IOException) ex;
+      }
+      throw new RuntimeException(ex);
     }
-    this.status = st;
-    return st;
   }
 
   public void setListener(GroveDigitalInListener listener) {
