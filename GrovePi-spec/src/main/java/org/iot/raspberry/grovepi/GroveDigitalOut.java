@@ -5,10 +5,10 @@ import static org.iot.raspberry.grovepi.GrovePiCommands.*;
 
 public class GroveDigitalOut {
 
-  private final GrovePi grovePi;
+  private final GroveIO grovePi;
   private final int pin;
 
-  public GroveDigitalOut(GrovePi grovePi, int pin) throws IOException {
+  public GroveDigitalOut(GroveIO grovePi, int pin) throws IOException {
     this.grovePi = grovePi;
     this.pin = pin;
     grovePi.send(pMode_cmd, pin, pMode_out_arg, unused);

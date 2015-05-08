@@ -12,11 +12,11 @@ import org.iot.raspberry.pi.devices.BMP085Result;
 public class TemperatureBuzz implements Example {
 
   @Override
-  public void run(RaspberryPi pi, GrovePi grovePi, AtomicBoolean running) throws Exception {
+  public void run(RaspberryPi pi, GrovePi grovePi, Monitor monitor) throws Exception {
     GroveDigitalOut led = grovePi.getDigitalOut(4);
     GroveDigitalOut buzzer = grovePi.getDigitalOut(3);
     BMP085 bmp085 = pi.getBPM085();
-    while (running.get()) {
+    while (monitor.isRunning()) {
       BMP085Result temperaturePressure = bmp085.getTemperaturePressure(BMP085Mode.STANDARD);
       System.out.println(temperaturePressure);
       boolean overheat = temperaturePressure.getTemperatureCelsius() > 31;

@@ -11,6 +11,4 @@ public interface GrovePi extends AutoCloseable {
   @Override
   public void close();
 
-  public void send(int... command) throws IOException;
-
 }

@@ -10,11 +10,12 @@ import jdk.dio.i2cbus.I2CDevice;
 import jdk.dio.i2cbus.I2CDeviceConfig;
 import org.iot.raspberry.grovepi.GroveDigitalIn;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
+import org.iot.raspberry.grovepi.GroveIO;
 import org.iot.raspberry.grovepi.GrovePi;
 
-public class GrovePiDio implements GrovePi {
+public class GrovePiDio implements GrovePi, GroveIO {
 
-  private final I2CDevice grovePi;
+  private final I2CDevice device;
 
   public GrovePiDio() throws IOException {
     final int i2cBus = 1;                        // Raspberry Pi's I2C bus
@@ -23,7 +24,7 @@ public class GrovePiDio implements GrovePi {
     final int addressSizeBits = 7;               // Device address size in bits
 
     I2CDeviceConfig config = new I2CDeviceConfig(i2cBus, address, addressSizeBits, serialClock);
-    grovePi = DeviceManager.open(config);
+    device = DeviceManager.open(config);
 
   }
 
@@ -34,7 +35,7 @@ public class GrovePiDio implements GrovePi {
 
   @Override
   public GroveDigitalIn getDigitalIn(int digitalPort) throws IOException {
-    return new GroveDigitalIn();
+    return new GroveDigitalIn(this, digitalPort);
   }
 
   @Override
@@ -47,7 +48,12 @@ public class GrovePiDio implements GrovePi {
     Arrays.stream(cmd).forEach((c) -> command.put((byte) c));
     command.rewind();
     Logger.getLogger("GrovePi").log(Level.INFO, "[DIO]Sending command {0}", Arrays.toString(cmd));
-    grovePi.write(command);
+    device.write(command);
+  }
+
+  @Override
+  public int read() throws IOException {
+    return device.read();
   }
 
 }

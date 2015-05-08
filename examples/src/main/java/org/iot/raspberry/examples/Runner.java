@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iot.raspberry.grovepi.GrovePi;
@@ -62,11 +61,11 @@ public class Runner {
     final ExecutorService consoleMonitor = Executors.newSingleThreadExecutor();
     final ExecutorService fileMonitor = Executors.newSingleThreadExecutor();
     final Semaphore lock = new Semaphore(0);
-    final AtomicBoolean running = new AtomicBoolean(true);
+    final Monitor monitor = new Monitor();
 
     runner.execute(() -> {
       try {
-        example.run(pi, grovePi, running);
+        example.run(pi, grovePi, monitor);
       } catch (Exception ex) {
         Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
       }
@@ -80,7 +79,7 @@ public class Runner {
           System.out.println("Command " + command + " not recognized, try quit");
         }
       }
-      running.set(false);
+      monitor.stop();
       lock.release();
     });
 
@@ -91,12 +90,11 @@ public class Runner {
         } catch (InterruptedException ex) {
         }
       }
-      running.set(false);
+      monitor.stop();
       lock.release();
     });
 
     lock.acquire();
-    running.set(false);
     runner.shutdown();
     consoleMonitor.shutdownNow();
     fileMonitor.shutdownNow();

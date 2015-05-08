@@ -10,9 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iot.raspberry.grovepi.GroveDigitalIn;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
+import org.iot.raspberry.grovepi.GroveIO;
 import org.iot.raspberry.grovepi.GrovePi;
 
-public class GrovePi4J implements GrovePi {
+public class GrovePi4J implements GrovePi, GroveIO {
 
   private static final int GROVEPI_ADDRESS = 4;
   private final I2CBus bus;
@@ -30,7 +31,7 @@ public class GrovePi4J implements GrovePi {
 
   @Override
   public GroveDigitalIn getDigitalIn(int digitalPort) throws IOException {
-    return new GroveDigitalIn();
+    return new GroveDigitalIn(this, digitalPort);
   }
 
   @Override
@@ -47,6 +48,11 @@ public class GrovePi4J implements GrovePi {
     ByteBuffer buffer = ByteBuffer.allocateDirect(command.length);
     Arrays.stream(command).forEach((c) -> buffer.put((byte) c));
     device.write(buffer.array(), 0, command.length);
+  }
+
+  @Override
+  public int read() throws IOException {
+    return device.read();
   }
 
 }

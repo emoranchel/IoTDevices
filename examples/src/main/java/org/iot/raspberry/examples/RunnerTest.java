@@ -7,8 +7,8 @@ import org.iot.raspberry.pi.RaspberryPi;
 public class RunnerTest implements Example {
 
   @Override
-  public void run(RaspberryPi pi, GrovePi grovePi, AtomicBoolean running) throws Exception {
-    while (running.get()) {
+  public void run(RaspberryPi pi, GrovePi grovePi, Monitor monitor) throws Exception {
+    while (monitor.isRunning()) {
       Thread.sleep(1000);
       System.out.println("Running...");
     }
