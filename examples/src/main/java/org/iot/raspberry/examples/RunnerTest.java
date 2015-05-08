@@ -1,7 +1,8 @@
 package org.iot.raspberry.examples;
 
-import org.asmatron.iot.grovepi.GrovePi;
-import org.asmatron.iot.pi.RaspberryPi;
+import org.iot.raspberry.grovepi.GrovePi;
+import org.iot.raspberry.pi.RaspberryPi;
+
 
 public class RunnerTest implements Example {
 
