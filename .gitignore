@@ -13,3 +13,6 @@ buildNumber.properties
 /bin
 /examples/build/
 /examples/dist/
+/ProjectStub/nbproject/private/
+/ProjectStub/build/
+/ProjectStub/dist/

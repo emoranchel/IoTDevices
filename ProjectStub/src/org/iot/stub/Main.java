@@ -1,8 +1,6 @@
-package org.iot.raspberry.examples;
+package org.iot.stub;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,59 +11,48 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.grovepi.dio.GrovePiDio;
-import org.iot.raspberry.grovepi.pi4j.GrovePi4J;
 import org.iot.raspberry.pi.RaspberryPi;
 import org.iot.raspberry.pi.dio.RaspberryPiDio;
-import org.iot.raspberry.pi.pi4j.RaspberryPi4J;
 
-public class Runner {
+public class Main {
+
+  public static void run(RaspberryPi pi, GrovePi grovePi, AtomicBoolean running) {
+    //Your App goes here
+  }
 
   public static void main(String[] args) throws Exception {
-    File control = new File("RUNNINGSAMPLES");
+    File control = new File("LOCKFILE");
     control.deleteOnExit();
     if (control.exists()) {
       control.delete();
       System.exit(0);
     }
-    if (args.length != 2) {
-      System.err.println("You need to provide 2 arguments DIO|PI4J EXAMPLECLASS");
-      System.exit(-1);
-    }
 
     control.createNewFile();
 
-    String mode = args[0];
-    GrovePi grovePi;
-    RaspberryPi pi;
-    switch (mode.toLowerCase()) {
-      case "dio":
-        grovePi = new GrovePiDio();
-        pi = new RaspberryPiDio();
-        break;
-      case "pi4j":
-        grovePi = new GrovePi4J();
-        pi = new RaspberryPi4J();
-        break;
-      case "test":
-        grovePi = createProxy(GrovePi.class);
-        pi = createProxy(RaspberryPi.class);
-        break;
-      default:
-        throw new IllegalArgumentException("You must provide either DIO or PI4J implementation");
-    }
-    Example example = (Example) Class.forName("org.iot.raspberry.examples." + args[1]).newInstance();
+    //select your implementation
+    // Device IO Implementation
+    GrovePi grovePi = new GrovePiDio();
+    RaspberryPi pi = new RaspberryPiDio();
+    // PI4J Implementation
+//    GrovePi grovePi = new GrovePi4J();
+//    RaspberryPi pi = new RaspberryPi4J();
+
+    //Your project runner
     final ExecutorService runner = Executors.newSingleThreadExecutor();
+    //The console monitor
     final ExecutorService consoleMonitor = Executors.newSingleThreadExecutor();
+    //The file lock monitor
     final ExecutorService fileMonitor = Executors.newSingleThreadExecutor();
+
     final Semaphore lock = new Semaphore(0);
     final AtomicBoolean running = new AtomicBoolean(true);
-    final Example.Monitor monitor = running::get;
 
     runner.execute(() -> {
       try {
-        example.run(pi, grovePi, monitor);
+        run(pi, grovePi, running);
       } catch (Exception ex) {
-        Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
       }
       lock.release();
     });
@@ -102,9 +89,4 @@ public class Runner {
     System.exit(0);
   }
 
-  private static <T> T createProxy(Class<T> aClass) {
-    return (T) Proxy.newProxyInstance(aClass.getClassLoader(), new Class<?>[]{aClass}, (Object proxy, Method method, Object[] args1) -> {
-      throw new RuntimeException("Test class methods not allowed");
-    });
-  }
 }
