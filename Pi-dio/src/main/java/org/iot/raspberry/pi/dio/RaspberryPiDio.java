@@ -7,7 +7,7 @@ import org.iot.raspberry.pi.devices.BMP085;
 public class RaspberryPiDio implements RaspberryPi {
 
   @Override
-  public BMP085 getBPM085() throws IOException{
+  public BMP085 getBPM085() throws IOException {
     return new BMP085Dio();
   }
 

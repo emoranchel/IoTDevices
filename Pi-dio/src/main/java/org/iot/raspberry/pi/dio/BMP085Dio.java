@@ -16,6 +16,7 @@ public class BMP085Dio extends BMP085 {
   public BMP085Dio() throws IOException {
     I2CDeviceConfig config = new I2CDeviceConfig(i2cBus, address, addressSizeBits, serialClock);
     this.bmp085 = DeviceManager.open(config);
+    this.initialize();
   }
 
   @Override

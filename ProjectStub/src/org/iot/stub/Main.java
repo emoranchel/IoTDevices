@@ -21,6 +21,10 @@ public class Main {
   }
 
   public static void main(String[] args) throws Exception {
+    Logger.getLogger("DIO").setLevel(Level.WARNING);
+    Logger.getLogger("GrovePi").setLevel(Level.WARNING);
+    Logger.getLogger("RaspberryPi").setLevel(Level.WARNING);
+
     File control = new File("LOCKFILE");
     control.deleteOnExit();
     if (control.exists()) {

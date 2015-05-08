@@ -21,6 +21,10 @@ import org.iot.raspberry.pi.pi4j.RaspberryPi4J;
 public class Runner {
 
   public static void main(String[] args) throws Exception {
+    Logger.getLogger("DIO").setLevel(Level.WARNING);
+    Logger.getLogger("GrovePi").setLevel(Level.WARNING);
+    Logger.getLogger("RaspberryPi").setLevel(Level.WARNING);
+
     File control = new File("RUNNINGSAMPLES");
     control.deleteOnExit();
     if (control.exists()) {
@@ -59,11 +63,10 @@ public class Runner {
     final ExecutorService fileMonitor = Executors.newSingleThreadExecutor();
     final Semaphore lock = new Semaphore(0);
     final AtomicBoolean running = new AtomicBoolean(true);
-    final Example.Monitor monitor = running::get;
 
     runner.execute(() -> {
       try {
-        example.run(pi, grovePi, monitor);
+        example.run(pi, grovePi, running);
       } catch (Exception ex) {
         Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
       }

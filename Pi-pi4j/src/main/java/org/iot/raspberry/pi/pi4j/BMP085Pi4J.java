@@ -14,6 +14,7 @@ public class BMP085Pi4J extends BMP085 {
 
   public BMP085Pi4J(I2CBus bus) throws IOException {
     bmp085 = bus.getDevice(address);
+    this.initialize();
   }
 
   @Override
