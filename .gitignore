@@ -11,3 +11,5 @@ buildNumber.properties
 /example-runner/dist/
 /example-runner/build/
 /bin
+/examples/build/
+/examples/dist/

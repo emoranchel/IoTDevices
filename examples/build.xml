@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="example-runner" default="default" basedir=".">
-    <description>Builds, tests, and runs the project example-runner.</description>
+<project name="examples" default="default" basedir="." xmlns:artifact="urn:maven-artifact-ant">
+    <description>Builds, tests, and runs the project examples.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 
@@ -58,7 +58,7 @@
 
     An example of overriding the target for project execution could look like this:
 
-        <target name="run" depends="example-runner-impl.jar">
+        <target name="run" depends="examples-impl.jar">
             <exec dir="bin" executable="launcher.exe">
                 <arg file="${dist.jar}"/>
             </exec>
@@ -69,5 +69,25 @@
     properties which you can use, check the target you are overriding in the
     nbproject/build-impl.xml file. 
 
-    -->
+  -->
+  <path id="maven-ant-tasks.classpath" path="nbproject/maven-ant-tasks-2.1.3.jar" />
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant"
+           classpathref="maven-ant-tasks.classpath" />  
+           
+  <target name="-maven-retrieve">
+    <artifact:pom file="${basedir}/pom.xml" id="maven.project"/>
+    <artifact:dependencies fileSetId="maven-ant-tasks.dependency.fileset">
+      <pom refid="maven.project"/>
+    </artifact:dependencies>
+    <pathconvert property="maven-ant-tasks.dependency.path" dirsep="/" pathsep=":">
+      <path>
+        <fileset refid="maven-ant-tasks.dependency.fileset"/>
+      </path>
+    </pathconvert>        
+    <propertyfile file="nbproject/project.properties">
+      <entry operation="=" key="maven.dependency.classpath" value="${maven-ant-tasks.dependency.path}"/>
+    </propertyfile>
+  </target>
+  <target name="-pre-compile" depends="-maven-retrieve"/>
+  <target name="-pre-compile-single" depends="-maven-retrieve"/>
 </project>
