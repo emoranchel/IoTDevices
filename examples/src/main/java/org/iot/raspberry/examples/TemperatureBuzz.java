@@ -1,7 +1,6 @@
 package org.iot.raspberry.examples;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.pi.RaspberryPi;
