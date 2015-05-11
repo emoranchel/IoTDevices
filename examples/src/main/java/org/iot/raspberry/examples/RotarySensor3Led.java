@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.grovepi.devices.GroveRotarySensor;
-import org.iot.raspberry.grovepi.devices.GroveRotarySensorValue;
+import org.iot.raspberry.grovepi.devices.GroveRotaryValue;
 import org.iot.raspberry.pi.RaspberryPi;
 
 /*
@@ -23,7 +23,7 @@ public class RotarySensor3Led implements Example {
     GroveDigitalOut onLed = null;
     while (monitor.isRunning()) {
       try {
-        GroveRotarySensorValue value = rotarySensor.get();
+        GroveRotaryValue value = rotarySensor.get();
         System.out.println(value);
         GroveDigitalOut ledToTurn;
         if (value.getDegrees() > 250) {

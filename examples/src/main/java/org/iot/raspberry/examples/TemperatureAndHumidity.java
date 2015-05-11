@@ -1,0 +1,23 @@
+package org.iot.raspberry.examples;
+
+import java.io.IOException;
+import org.iot.raspberry.grovepi.GrovePi;
+import org.iot.raspberry.grovepi.devices.GroveTemperatureAndHumiditySensor;
+import org.iot.raspberry.pi.RaspberryPi;
+/*
+ Connect Temp & Humidity sensor to D4
+ */
+
+public class TemperatureAndHumidity implements Example {
+
+  @Override
+  public void run(RaspberryPi pi, GrovePi grovePi, Monitor monitor) throws Exception {
+    GroveTemperatureAndHumiditySensor dht = new GroveTemperatureAndHumiditySensor(grovePi, 4);
+    while (monitor.isRunning()) {
+      try {
+        System.out.println(dht.get());
+      } catch (IOException ex) {
+      }
+    }
+  }
+}

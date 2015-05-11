@@ -1,12 +1,12 @@
 package org.iot.raspberry.grovepi.devices;
 
-public class GroveRotarySensorValue {
+public class GroveRotaryValue {
 
   private final double sensorValue;
   private final double voltage;
   private final double degrees;
 
-  public GroveRotarySensorValue(double sensorValue, double voltage, double degrees) {
+  public GroveRotaryValue(double sensorValue, double voltage, double degrees) {
     this.sensorValue = sensorValue;
     this.voltage = voltage;
     this.degrees = degrees;

@@ -1,5 +1,6 @@
 package org.iot.raspberry.grovepi;
 
+import org.iot.raspberry.grovepi.devices.GroveRgbLcd;
 import java.io.IOException;
 
 public interface GrovePi extends AutoCloseable {
@@ -19,6 +20,8 @@ public interface GrovePi extends AutoCloseable {
   default public GroveAnalogIn getAnalogIn(int digitalPort, int bufferSize) throws IOException {
     return new GroveAnalogIn(this, digitalPort, bufferSize);
   }
+
+  public GroveRgbLcd getLCD() throws IOException;
 
   public <T> T exec(GrovePiSequence<T> sequence) throws IOException;
 

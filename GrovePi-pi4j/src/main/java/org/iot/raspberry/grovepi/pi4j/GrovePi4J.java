@@ -11,8 +11,9 @@ import org.iot.raspberry.grovepi.GroveIO;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.grovepi.GrovePiSequence;
 import org.iot.raspberry.grovepi.GrovePiSequenceVoid;
+import org.iot.raspberry.grovepi.devices.GroveRgbLcd;
 
-public class GrovePi4J implements GrovePi, GroveIO {
+public class GrovePi4J implements GrovePi {
 
   private static final int GROVEPI_ADDRESS = 4;
   private final I2CBus bus;
@@ -26,14 +27,14 @@ public class GrovePi4J implements GrovePi, GroveIO {
   @Override
   public <T> T exec(GrovePiSequence<T> sequence) throws IOException {
     synchronized (this) {
-      return sequence.execute(this);
+      return sequence.execute(new IO(device));
     }
   }
 
   @Override
   public void execVoid(GrovePiSequenceVoid sequence) throws IOException {
     synchronized (this) {
-      sequence.execute(this);
+      sequence.execute(new IO(device));
     }
   }
 
@@ -46,28 +47,8 @@ public class GrovePi4J implements GrovePi, GroveIO {
     }
   }
 
-  // IO
   @Override
-  public void write(int... command) throws IOException {
-    byte[] buffer = new byte[command.length];
-    for (int i = 0; i < command.length; i++) {
-      buffer[i] = (byte) command[i];
-    }
-    Logger.getLogger("GrovePi").log(Level.INFO, "[Pi4J IO write]{0}", Arrays.toString(buffer));
-    device.write(buffer, 0, command.length);
-  }
-
-  @Override
-  public int read() throws IOException {
-    final int read = device.read();
-    Logger.getLogger("GrovePi").log(Level.INFO, "[Pi4J IO read]{0}", read);
-    return read;
-  }
-
-  @Override
-  public byte[] read(byte[] buffer) throws IOException {
-    device.read(buffer, 0, buffer.length);
-    Logger.getLogger("GrovePi").log(Level.INFO, "[Pi4J IO read]{0}", Arrays.toString(buffer));
-    return buffer;
+  public GroveRgbLcd getLCD() throws IOException {
+    return new GroveRgbLcdPi4J();
   }
 }

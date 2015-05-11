@@ -1,10 +1,12 @@
 package org.iot.raspberry.grovepi.devices;
 
 import java.io.IOException;
+import org.iot.raspberry.grovepi.GroveAnalogPin;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.grovepi.GroveUtil;
 
-public class GroveRotarySensor extends GroveAnalogInputDevice<GroveRotarySensorValue> {
+@GroveAnalogPin
+public class GroveRotarySensor extends GroveAnalogInputDevice<GroveRotaryValue> {
 
   //Reference voltage of ADC is 5v
   public static final double ADC_REF = 5;
@@ -18,12 +20,12 @@ public class GroveRotarySensor extends GroveAnalogInputDevice<GroveRotarySensorV
   }
 
   @Override
-  public GroveRotarySensorValue get(byte[] b) {
+  public GroveRotaryValue get(byte[] b) {
     int[] v = GroveUtil.unsign(b);
     double sensor_value = (v[1] * 256) + v[2];
     double voltage = (sensor_value * ADC_REF / 1023);
     double degrees = voltage * FULL_ANGLE / GROVE_VCC;
-    return new GroveRotarySensorValue(sensor_value, voltage, degrees);
+    return new GroveRotaryValue(sensor_value, voltage, degrees);
   }
 
 }

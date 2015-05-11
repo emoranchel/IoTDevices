@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.grovepi.devices.GroveLed;
 import org.iot.raspberry.grovepi.devices.GroveRotarySensor;
-import org.iot.raspberry.grovepi.devices.GroveRotarySensorValue;
+import org.iot.raspberry.grovepi.devices.GroveRotaryValue;
 import org.iot.raspberry.pi.RaspberryPi;
 /*
  Connect:
@@ -20,7 +20,7 @@ public class RotarySensorDimLed implements Example {
     GroveLed blueLed = new GroveLed(grovePi, 5);
     while (monitor.isRunning()) {
       try {
-        GroveRotarySensorValue value = rotarySensor.get();
+        GroveRotaryValue value = rotarySensor.get();
         int brightness = (int) (value.getFactor() * GroveLed.MAX_BRIGTHNESS);
         blueLed.set(brightness);
       } catch (IOException ex) {
