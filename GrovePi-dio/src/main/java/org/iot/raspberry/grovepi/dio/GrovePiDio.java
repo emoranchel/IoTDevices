@@ -3,16 +3,15 @@ package org.iot.raspberry.grovepi.dio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdk.dio.DeviceManager;
 import jdk.dio.i2cbus.I2CDevice;
 import jdk.dio.i2cbus.I2CDeviceConfig;
-import org.iot.raspberry.grovepi.GroveDigitalIn;
-import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GroveIO;
 import org.iot.raspberry.grovepi.GrovePi;
+import org.iot.raspberry.grovepi.GrovePiSequence;
+import org.iot.raspberry.grovepi.GrovePiSequenceVoid;
 
 public class GrovePiDio implements GrovePi, GroveIO {
 
@@ -29,36 +28,43 @@ public class GrovePiDio implements GrovePi, GroveIO {
 
   }
 
-  @Override
-  public GroveDigitalOut getDigitalOut(int digitalPort) throws IOException {
-    return new GroveDigitalOut(this, digitalPort);
+  public <T> T exec(GrovePiSequence<T> sequence) throws IOException {
+    synchronized (this) {
+      return sequence.execute(this);
+    }
   }
 
-  @Override
-  public GroveDigitalIn getDigitalIn(int digitalPort) throws IOException {
-    return new GroveDigitalIn(this, digitalPort);
+  public void execVoid(GrovePiSequenceVoid sequence) throws IOException {
+    synchronized (this) {
+      sequence.execute(this);
+    }
   }
 
   @Override
   public void close() {
   }
 
+  // IO
   @Override
-  public void send(int... cmd) throws IOException {
-    synchronized (this) {
-      ByteBuffer command = ByteBuffer.allocateDirect(cmd.length);
-      Arrays.stream(cmd).forEach((c) -> command.put((byte) c));
-      command.rewind();
-      Logger.getLogger("GrovePi").log(Level.INFO, "[DIO]Sending command {0}", Arrays.toString(cmd));
-      device.write(command);
-    }
+  public void write(int... cmd) throws IOException {
+    ByteBuffer command = ByteBuffer.allocateDirect(cmd.length);
+    Arrays.stream(cmd).forEach((c) -> command.put((byte) c));
+    command.rewind();
+    Logger.getLogger("GrovePi").log(Level.INFO, "[DIO]Sending command {0}", Arrays.toString(cmd));
+    device.write(command);
   }
 
   @Override
   public int read() throws IOException {
-    synchronized (this) {
-      return device.read();
-    }
+    return device.read();
+  }
+
+  @Override
+  public byte[] read(byte[] buffer) throws IOException {
+    ByteBuffer bf = ByteBuffer.wrap(buffer);
+    bf.rewind();
+    device.read(bf);
+    return buffer;
   }
 
 }

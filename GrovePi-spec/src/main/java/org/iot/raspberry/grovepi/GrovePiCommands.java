@@ -77,5 +77,6 @@ public class GrovePiCommands {
 // sets leds similar to a bar graph, reversible
   public static final int chainableRgbLedSetLevel_cmd = 0x95;
 
-  public static final int pMode_out_arg = 0x02;
+  public static final int pMode_out_arg = 0x01;
+  public static final int pMode_in_arg = 0x00;
 }

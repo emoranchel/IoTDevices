@@ -8,10 +8,10 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iot.raspberry.grovepi.GroveDigitalIn;
-import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GroveIO;
 import org.iot.raspberry.grovepi.GrovePi;
+import org.iot.raspberry.grovepi.GrovePiSequence;
+import org.iot.raspberry.grovepi.GrovePiSequenceVoid;
 
 public class GrovePi4J implements GrovePi, GroveIO {
 
@@ -25,13 +25,17 @@ public class GrovePi4J implements GrovePi, GroveIO {
   }
 
   @Override
-  public GroveDigitalOut getDigitalOut(int digitalPort) throws IOException {
-    return new GroveDigitalOut(this, digitalPort);
+  public <T> T exec(GrovePiSequence<T> sequence) throws IOException {
+    synchronized (this) {
+      return sequence.execute(this);
+    }
   }
 
   @Override
-  public GroveDigitalIn getDigitalIn(int digitalPort) throws IOException {
-    return new GroveDigitalIn(this, digitalPort);
+  public void execVoid(GrovePiSequenceVoid sequence) throws IOException {
+    synchronized (this) {
+      sequence.execute(this);
+    }
   }
 
   @Override
@@ -43,20 +47,22 @@ public class GrovePi4J implements GrovePi, GroveIO {
     }
   }
 
+  // IO
   @Override
-  public void send(int... command) throws IOException {
-    synchronized (this) {
-      ByteBuffer buffer = ByteBuffer.allocateDirect(command.length);
-      Arrays.stream(command).forEach((c) -> buffer.put((byte) c));
-      device.write(buffer.array(), 0, command.length);
-    }
+  public void write(int... command) throws IOException {
+    ByteBuffer buffer = ByteBuffer.allocateDirect(command.length);
+    Arrays.stream(command).forEach((c) -> buffer.put((byte) c));
+    device.write(buffer.array(), 0, command.length);
   }
 
   @Override
   public int read() throws IOException {
-    synchronized (this) {
-      return device.read();
-    }
+    return device.read();
   }
 
+  @Override
+  public byte[] read(byte[] buffer) throws IOException {
+    device.read(buffer, 0, buffer.length);
+    return buffer;
+  }
 }
