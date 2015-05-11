@@ -50,13 +50,15 @@ public class GrovePiDio implements GrovePi, GroveIO {
     ByteBuffer command = ByteBuffer.allocateDirect(cmd.length);
     Arrays.stream(cmd).forEach((c) -> command.put((byte) c));
     command.rewind();
-    Logger.getLogger("GrovePi").log(Level.INFO, "[DIO]Sending command {0}", Arrays.toString(cmd));
+    Logger.getLogger("GrovePi").log(Level.INFO, "[DIO IO write]{0}", Arrays.toString(cmd));
     device.write(command);
   }
 
   @Override
   public int read() throws IOException {
-    return device.read();
+    final int read = device.read();
+    Logger.getLogger("GrovePi").log(Level.INFO, "[DIO IO read]{0}", read);
+    return read;
   }
 
   @Override
@@ -64,6 +66,7 @@ public class GrovePiDio implements GrovePi, GroveIO {
     ByteBuffer bf = ByteBuffer.wrap(buffer);
     bf.rewind();
     device.read(bf);
+    Logger.getLogger("GrovePi").log(Level.INFO, "[DIO IO read]{0}", buffer);
     return buffer;
   }
 

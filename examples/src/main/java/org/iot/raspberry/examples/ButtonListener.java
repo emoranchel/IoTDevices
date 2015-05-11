@@ -6,6 +6,9 @@ import java.util.concurrent.TimeUnit;
 import org.iot.raspberry.grovepi.GroveDigitalIn;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.pi.RaspberryPi;
+/*
+ Connect: Button to D6
+ */
 
 public class ButtonListener implements Example {
 

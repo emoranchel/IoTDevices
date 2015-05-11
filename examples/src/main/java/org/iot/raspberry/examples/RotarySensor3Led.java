@@ -3,31 +3,32 @@ package org.iot.raspberry.examples;
 import java.io.IOException;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GrovePi;
-import org.iot.raspberry.grovepi.devices.GroveSoundSensor;
+import org.iot.raspberry.grovepi.devices.GroveRotarySensor;
+import org.iot.raspberry.grovepi.devices.GroveRotarySensorValue;
 import org.iot.raspberry.pi.RaspberryPi;
 
 /*
  Connect:
- SoundSensor to A0
+ RotarySensor to A1
  Leds to D3 (red),D4 (green) and D5 (blue)
  */
-public class SoundSensor implements Example {
+public class RotarySensor3Led implements Example {
 
   @Override
   public void run(RaspberryPi pi, GrovePi grovePi, Monitor monitor) throws Exception {
-    GroveSoundSensor soundSensor = new GroveSoundSensor(grovePi, 0);
+    GroveRotarySensor rotarySensor = new GroveRotarySensor(grovePi, 1);
     GroveDigitalOut redLed = grovePi.getDigitalOut(3);
     GroveDigitalOut greenLed = grovePi.getDigitalOut(4);
     GroveDigitalOut blueLed = grovePi.getDigitalOut(5);
     GroveDigitalOut onLed = null;
     while (monitor.isRunning()) {
       try {
-        double soundLevel = soundSensor.get();
-        System.out.println(soundLevel);
+        GroveRotarySensorValue value = rotarySensor.get();
+        System.out.println(value);
         GroveDigitalOut ledToTurn;
-        if (soundLevel > 1000) {
+        if (value.getDegrees() > 250) {
           ledToTurn = redLed;
-        } else if (soundLevel < 300) {
+        } else if (value.getDegrees() < 100) {
           ledToTurn = blueLed;
         } else {
           ledToTurn = greenLed;

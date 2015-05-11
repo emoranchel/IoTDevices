@@ -16,8 +16,8 @@ public interface GrovePi extends AutoCloseable {
     return new GroveAnalogOut(this, digitalPort);
   }
 
-  default public GroveAnalogIn getAnalogIn(int digitalPort) throws IOException {
-    return new GroveAnalogIn(this, digitalPort);
+  default public GroveAnalogIn getAnalogIn(int digitalPort, int bufferSize) throws IOException {
+    return new GroveAnalogIn(this, digitalPort, bufferSize);
   }
 
   public <T> T exec(GrovePiSequence<T> sequence) throws IOException;

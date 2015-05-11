@@ -4,6 +4,9 @@ import org.iot.raspberry.grovepi.GroveDigitalIn;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.pi.RaspberryPi;
+/*
+ Connect: Led to D4 and Button to D6
+ */
 
 public class ButtonLed implements Example {
 

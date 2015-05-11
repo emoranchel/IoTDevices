@@ -4,7 +4,6 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,19 +49,25 @@ public class GrovePi4J implements GrovePi, GroveIO {
   // IO
   @Override
   public void write(int... command) throws IOException {
-    ByteBuffer buffer = ByteBuffer.allocateDirect(command.length);
-    Arrays.stream(command).forEach((c) -> buffer.put((byte) c));
-    device.write(buffer.array(), 0, command.length);
+    byte[] buffer = new byte[command.length];
+    for (int i = 0; i < command.length; i++) {
+      buffer[i] = (byte) command[i];
+    }
+    Logger.getLogger("GrovePi").log(Level.INFO, "[Pi4J IO write]{0}", Arrays.toString(buffer));
+    device.write(buffer, 0, command.length);
   }
 
   @Override
   public int read() throws IOException {
-    return device.read();
+    final int read = device.read();
+    Logger.getLogger("GrovePi").log(Level.INFO, "[Pi4J IO read]{0}", read);
+    return read;
   }
 
   @Override
   public byte[] read(byte[] buffer) throws IOException {
     device.read(buffer, 0, buffer.length);
+    Logger.getLogger("GrovePi").log(Level.INFO, "[Pi4J IO read]{0}", Arrays.toString(buffer));
     return buffer;
   }
 }

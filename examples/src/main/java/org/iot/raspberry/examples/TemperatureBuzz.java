@@ -7,6 +7,10 @@ import org.iot.raspberry.pi.RaspberryPi;
 import org.iot.raspberry.pi.devices.BMP085;
 import org.iot.raspberry.pi.devices.BMP085Mode;
 import org.iot.raspberry.pi.devices.BMP085Result;
+/*
+ Connect: Led to D4 and Buzzer to D3
+ Temperature BMP085 to Rpi I2C bus
+ */
 
 public class TemperatureBuzz implements Example {
 
