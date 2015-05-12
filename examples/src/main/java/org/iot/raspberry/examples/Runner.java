@@ -28,6 +28,7 @@ public class Runner {
     control.deleteOnExit();
     if (control.exists()) {
       control.delete();
+      System.out.println("STOPING CURRENT SAMPLE");
       System.exit(0);
     }
     if (args.length != 2) {
@@ -57,6 +58,7 @@ public class Runner {
         throw new IllegalArgumentException("You must provide either DIO or PI4J implementation");
     }
     Example example = (Example) Class.forName("org.iot.raspberry.examples." + args[1]).newInstance();
+    System.out.println("RUNNING EXAMPLE: " + args[1] + " USING: " + args[0]);
     final ExecutorService runner = Executors.newSingleThreadExecutor();
     final ExecutorService consoleMonitor = Executors.newSingleThreadExecutor();
     final ExecutorService fileMonitor = Executors.newSingleThreadExecutor();

@@ -19,6 +19,7 @@ public class GroveRgbLcdPi4J extends GroveRgbLcd {
     this.bus = I2CFactory.getInstance(I2CBus.BUS_1);
     this.rgb = bus.getDevice(DISPLAY_RGB_ADDR);
     this.text = bus.getDevice(DISPLAY_TEXT_ADDR);
+    init();
   }
 
   @Override

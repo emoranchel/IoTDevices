@@ -53,32 +53,17 @@ public abstract class BMP085 implements AutoCloseable {
   private static final int subAddressSize = 1;                // Size of each address (in bytes)
 
   // ByteBuffer objects hold the data written/read from the sensor
-  private ByteBuffer command;
-  private ByteBuffer uncompTemp;
-  private ByteBuffer uncompPress;
+  public abstract byte[] read(int startAddress, int subAddressSize, byte[] data) throws IOException;
 
-  public abstract int read(int startAddress, int subAddressSize, ByteBuffer data) throws IOException;
-
-  public abstract void write(int startAddress, int subAddressSize, ByteBuffer data) throws IOException;
+  public abstract void write(int startAddress, int subAddressSize, byte[] data) throws IOException;
 
   @Override
   public abstract void close();
 
-  public void initialize() throws IOException {
-    command = ByteBuffer.allocateDirect(subAddressSize);
-    uncompTemp = ByteBuffer.allocateDirect(2);
-    uncompPress = ByteBuffer.allocateDirect(3);
-    readCalibrationData();
-  }
-
-  private void readCalibrationData() throws IOException {
+  protected final void initialize() throws IOException {
     // Read all of the calibration data into a byte array
-    ByteBuffer calibData = ByteBuffer.allocateDirect(CALIB_BYTES);
-    int result = read(EEPROM_start, subAddressSize, calibData);
-    if (result < CALIB_BYTES) {
-      System.out.format("Error: %n bytes read/n", result);
-      return;
-    }
+    byte[] readdata = read(EEPROM_start, subAddressSize, new byte[CALIB_BYTES]);
+    ByteBuffer calibData = ByteBuffer.wrap(readdata);
     // Read each of the pairs of data as a signed short
     calibData.rewind();
     AC1 = calibData.getShort();
@@ -104,10 +89,7 @@ public abstract class BMP085 implements AutoCloseable {
 
   private float getTemperature(BMP085Mode mode) throws IOException {
     // Write the read temperature command to the command register
-    command.clear();
-    command.put(getTempCmd);
-    command.rewind();
-    write(controlRegister, subAddressSize, command);
+    write(controlRegister, subAddressSize, new byte[]{getTempCmd});
 
     // Delay before reading the temperature
     try {
@@ -115,13 +97,8 @@ public abstract class BMP085 implements AutoCloseable {
     } catch (InterruptedException ex) {
     }
 
-    uncompTemp.clear();
-    int result = read(tempAddr, subAddressSize, uncompTemp);
-    if (result < 2) {
-      System.out.format("Error: %n bytes read/n", result);
-      return 0;
-    }
-
+    byte[] result = read(tempAddr, subAddressSize, new byte[2]);
+    ByteBuffer uncompTemp = ByteBuffer.wrap(result);
     // Get the uncompensated temperature as a signed two byte word
     uncompTemp.rewind();
     byte[] data = new byte[2];
@@ -140,10 +117,7 @@ public abstract class BMP085 implements AutoCloseable {
   private float getPressure(BMP085Mode mode) throws IOException {
     // The pressure command is calculated by the enum
     // Write the read pressure command to the command register
-    command.clear();
-    command.put(mode.getCommand());
-    command.rewind();
-    write(controlRegister, subAddressSize, command);
+    write(controlRegister, subAddressSize, new byte[]{mode.getCommand()});
 
     // Delay before reading the pressure - use the value determined by the oversampling setting (mode)
     try {
@@ -152,13 +126,8 @@ public abstract class BMP085 implements AutoCloseable {
     }
 
     // Read the uncompensated pressure value
-    uncompPress.clear();
-    int result = read(pressAddr, subAddressSize, uncompPress);
-    if (result < 3) {
-      System.out.format("Error: %n bytes read/n", result);
-      return 0;
-    }
-
+    byte[] result = read(pressAddr, subAddressSize, new byte[3]);
+    ByteBuffer uncompPress = ByteBuffer.wrap(result);
     // Get the uncompensated pressure as a three byte word
     uncompPress.rewind();
     byte[] data = new byte[3];

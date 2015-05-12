@@ -11,7 +11,7 @@ import org.iot.raspberry.pi.devices.BMP085;
 
 public class BMP085Dio extends BMP085 {
 
-  private I2CDevice bmp085;
+  private final I2CDevice bmp085;
 
   public BMP085Dio() throws IOException {
     I2CDeviceConfig config = new I2CDeviceConfig(i2cBus, address, addressSizeBits, serialClock);
@@ -20,13 +20,18 @@ public class BMP085Dio extends BMP085 {
   }
 
   @Override
-  public int read(int startAddress, int subAddressSize, ByteBuffer data) throws IOException {
-    return bmp085.read(startAddress, subAddressSize, data);
+  public byte[] read(int startAddress, int subAddressSize, byte[] data) throws IOException {
+    ByteBuffer command = ByteBuffer.wrap(data);
+    command.rewind();
+    bmp085.read(startAddress, subAddressSize, command);
+    return data;
   }
 
   @Override
-  public void write(int startAddress, int subAddressSize, ByteBuffer data) throws IOException {
-    bmp085.write(startAddress, subAddressSize, data);
+  public void write(int startAddress, int subAddressSize, byte[] data) throws IOException {
+    ByteBuffer command = ByteBuffer.wrap(data);
+    command.rewind();
+    bmp085.write(startAddress, subAddressSize, command);
   }
 
   @Override

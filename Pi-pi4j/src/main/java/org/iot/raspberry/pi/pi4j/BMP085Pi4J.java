@@ -3,9 +3,6 @@ package org.iot.raspberry.pi.pi4j;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.iot.raspberry.pi.devices.BMP085;
 
 public class BMP085Pi4J extends BMP085 {
@@ -18,13 +15,14 @@ public class BMP085Pi4J extends BMP085 {
   }
 
   @Override
-  public int read(int startAddress, int subAddressSize, ByteBuffer data) throws IOException {
-    return bmp085.read(address, data.array(), i2cBus, i2cBus);
+  public byte[] read(int startAddress, int subAddressSize, byte[] data) throws IOException {
+    bmp085.read(address, data, i2cBus, i2cBus);
+    return data;
   }
 
   @Override
-  public void write(int startAddress, int subAddressSize, ByteBuffer data) throws IOException {
-    bmp085.write(startAddress, data.array(), 0, data.array().length);
+  public void write(int startAddress, int subAddressSize, byte[] data) throws IOException {
+    bmp085.write(startAddress, data, 0, data.length);
   }
 
   @Override

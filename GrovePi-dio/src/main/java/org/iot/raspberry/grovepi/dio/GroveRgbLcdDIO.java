@@ -19,9 +19,11 @@ public class GroveRgbLcdDIO extends GroveRgbLcd {
     final int serialClock = 3400000;             // 3.4MHz Max clock
     final int addressSizeBits = 7;               // Device address size in bits
 
-    this.rgb = DeviceManager.open(new I2CDeviceConfig(i2cBus, DISPLAY_RGB_ADDR, addressSizeBits, serialClock));
     this.text = DeviceManager.open(new I2CDeviceConfig(i2cBus, DISPLAY_TEXT_ADDR, addressSizeBits, serialClock));
 
+    this.rgb = DeviceManager.open(new I2CDeviceConfig(i2cBus, DISPLAY_RGB_ADDR, addressSizeBits, serialClock));
+
+    init();
   }
 
   @Override
