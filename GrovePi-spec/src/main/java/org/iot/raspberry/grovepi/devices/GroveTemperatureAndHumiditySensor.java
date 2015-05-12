@@ -9,18 +9,36 @@ import static org.iot.raspberry.grovepi.GrovePiCommands.*;
 @GroveDigitalPin
 public class GroveTemperatureAndHumiditySensor {
 
+  public enum Type {
+
+    DHT11(0), //blue one
+    DHT22(1), //White one (PRO) AKA (AM2302)
+    DHT21(2), //Black One AKA (AM2301)
+    AM2301(3); //White one (PRO)
+    private final int moduleType;
+
+    private Type(int moduleType) {
+      this.moduleType = moduleType;
+    }
+
+    public int getModuleType() {
+      return moduleType;
+    }
+
+  }
   private final GrovePi grovePi;
   private final int pin;
-  private static final int MODULE_TYPE = 1;
+  private final Type dhtType;
 
-  public GroveTemperatureAndHumiditySensor(GrovePi grovePi, int pin) {
+  public GroveTemperatureAndHumiditySensor(GrovePi grovePi, int pin, Type dhtType) {
     this.grovePi = grovePi;
     this.pin = pin;
+    this.dhtType = dhtType;
   }
 
   public GroveTemperatureAndHumidityValue get() throws IOException {
     byte[] data = grovePi.exec((io) -> {
-      io.write(dht_temp_cmd, pin, MODULE_TYPE, unused);
+      io.write(dht_temp_cmd, pin, dhtType.moduleType, unused);
       io.sleep(600);
       return io.read(new byte[9]);
     });

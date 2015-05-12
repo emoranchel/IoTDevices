@@ -12,7 +12,7 @@ public class TemperatureAndHumidity implements Example {
 
   @Override
   public void run(RaspberryPi pi, GrovePi grovePi, Monitor monitor) throws Exception {
-    GroveTemperatureAndHumiditySensor dht = new GroveTemperatureAndHumiditySensor(grovePi, 4);
+    GroveTemperatureAndHumiditySensor dht = new GroveTemperatureAndHumiditySensor(grovePi, 4, GroveTemperatureAndHumiditySensor.Type.DHT11);
     while (monitor.isRunning()) {
       try {
         System.out.println(dht.get());
