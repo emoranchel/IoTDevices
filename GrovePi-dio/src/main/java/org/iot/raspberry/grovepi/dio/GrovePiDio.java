@@ -9,6 +9,11 @@ import org.iot.raspberry.grovepi.GrovePiSequence;
 import org.iot.raspberry.grovepi.GrovePiSequenceVoid;
 import org.iot.raspberry.grovepi.devices.GroveRgbLcd;
 
+/**
+ * Create a new GrovePi interface using the Device I/O
+ *
+ * @author Eduardo Moranchel <emoranchel@asmatron.org>
+ */
 public class GrovePiDio implements GrovePi {
 
   private final I2CDevice device;

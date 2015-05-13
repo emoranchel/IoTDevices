@@ -4,7 +4,6 @@ import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.GrovePi;
 import org.iot.raspberry.pi.RaspberryPi;
 
-
 /*
  Connect: Led to D4
  */
