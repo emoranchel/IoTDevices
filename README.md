@@ -10,19 +10,19 @@ You can watch the following videos on livecoding.tv where I went through configu
 
 Raspberry Pi Environment Setup
 
-Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-1/
-Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-2/
-Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-2-3/
-Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-3/
-Device IO https://www.livecoding.tv/video/java-and-the-internet-of-things-4/
+* Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-1/
+* Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-2/
+* Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-2-3/
+* Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-3/
+* Device IO https://www.livecoding.tv/video/java-and-the-internet-of-things-4/
 
 Device Exploration
 
-GrovePi and i2c https://www.livecoding.tv/video/java-and-the-internet-of-things-5/
+* GrovePi and i2c https://www.livecoding.tv/video/java-and-the-internet-of-things-5/
 
 Creating IoT projects
 
-Sensors and Led fun!, REST and JavaEE 7 https://www.livecoding.tv/video/java-and-the-internet-of-things-6/
-Creating a Java IoT project https://www.livecoding.tv/video/java-and-the-internet-of-things-7/
-Creating a Java IoT project https://www.livecoding.tv/video/java-and-the-internet-of-things-7-2/
+* Sensors and Led fun!, REST and JavaEE 7 https://www.livecoding.tv/video/java-and-the-internet-of-things-6/
+* Creating a Java IoT project https://www.livecoding.tv/video/java-and-the-internet-of-things-7/
+* Creating a Java IoT project https://www.livecoding.tv/video/java-and-the-internet-of-things-7-2/
 
