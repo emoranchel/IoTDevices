@@ -8,6 +8,12 @@ to your Java command
 Want to learn how this was done?
 You can watch the following videos on livecoding.tv where I went through configuring a Raspberry Pi and Grove Pi and showed how to use the library stored here.
 
+Download now the Raspberry Pi Image used in the examples, libraries, etc.
+
+https://mega.nz/#!WQNWFYjA!XamnrYZPCKcELORwb_B6nRZRdU_dBR-D75Zt0wN0_cA
+
+Write it to a 2gb (or more) SD Card! using: http://sourceforge.net/projects/win32diskimager/
+
 Raspberry Pi Environment Setup
 
 * Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-1/
