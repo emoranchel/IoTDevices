@@ -14,6 +14,12 @@ https://mega.nz/#!WQNWFYjA!XamnrYZPCKcELORwb_B6nRZRdU_dBR-D75Zt0wN0_cA
 
 Write it to a 2gb (or more) SD Card! using: http://sourceforge.net/projects/win32diskimager/
 
+Connect your raspberry pi to your pc using the ethernet cable (direct connection)
+
+Putty to the pi IP address: 192.168.127.1 username:pi password:raspberry
+
+The Pi is running a simplified Raspbian (no Desktop GUI environment) with Java, Python, etc. The pi has a DHCP server
+
 Raspberry Pi Environment Setup
 
 * Raspberry Pi Setup https://www.livecoding.tv/video/java-and-the-internet-of-things-1/
